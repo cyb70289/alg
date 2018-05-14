@@ -23,4 +23,22 @@ def print_nested_on2(intervals, printed_set=set()):
             printed_set.add(s)
     print_nested_on2(intervals[1:], printed_set)
 
+print("O(n^2)")
 print_nested_on2(intervals)
+
+max_ends = [0] * len(intervals)
+m = -1
+for i in range(len(intervals)):
+    if intervals[i][1] > m:
+        m = intervals[i][1]
+    max_ends[i] = m
+
+def print_nested_on(intervals, i):
+    if (i == 0):
+        return
+    print_nested_on(intervals, i-1)
+    if intervals[i][1] < max_ends[i-1]:
+        print(intervals[i])
+
+print("O(n)")
+print_nested_on(intervals, len(intervals)-1)
