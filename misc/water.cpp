@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+/* divide and conquer, O(nlogn) */
 static int max_water(int height[], int left_idx, int right_idx)
 {
     if ((right_idx - left_idx) <= 1) {
@@ -33,6 +34,38 @@ static int max_water(int height[], int left_idx, int right_idx)
     }
 }
 
+/* O(n) */
+static int max_water2(int height[], int left_idx, int right_idx)
+{
+    if ((right_idx - left_idx) <= 1) {
+        return 0;
+    }
+
+    int vol = 0;
+    int left_height_max = height[left_idx];
+    int right_height_max = height[right_idx];
+
+    while (left_idx < right_idx) {
+        if (left_height_max <= right_height_max) {
+            ++left_idx;
+            if (height[left_idx] < left_height_max) {
+                vol += (left_height_max - height[left_idx]);
+            } else {
+                left_height_max = height[left_idx];
+            }
+        } else {
+            --right_idx;
+            if (height[right_idx] < right_height_max) {
+                vol += (right_height_max - height[right_idx]);
+            } else {
+                right_height_max = height[right_idx];
+            }
+        }
+    }
+
+    return vol;
+}
+
 int main(void)
 {
     int height[] { 0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1 };
@@ -41,6 +74,7 @@ int main(void)
     int right_idx = sizeof(height)/sizeof(height[0]) - 1;
 
     std::cout << max_water(height, left_idx, right_idx) << std::endl;
+    std::cout << max_water2(height, left_idx, right_idx) << std::endl;
 
     return 0;
 }
